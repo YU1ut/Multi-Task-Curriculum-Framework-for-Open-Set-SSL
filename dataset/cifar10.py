@@ -57,7 +57,7 @@ cifar10_std = (0.2471, 0.2435, 0.2616)
 def pad(x, border=4):
     return np.pad(x, [(0,0), (border, border), (border, border), (0, 0)])
 
-def normalise(x, mean=cifar10_mean, std=cifar10_std):
+def normalize(x, mean=cifar10_mean, std=cifar10_std):
     x, mean, std = [np.array(a, np.float32) for a in (x, mean, std)]
     x -= mean*255
     x *= 1.0/(255*std)
@@ -77,7 +77,7 @@ class CIFAR10_labeled(torchvision.datasets.CIFAR10):
         if indexs is not None:
             self.data = self.data[indexs]
             self.targets = np.array(self.targets)[indexs]
-        self.data = transpose(normalise(pad(self.data)))
+        self.data = transpose(normalize(pad(self.data)))
 
     def __getitem__(self, index):
         img, target = self.data[index], self.targets[index]
@@ -102,7 +102,7 @@ class CIFAR10_unlabeled(CIFAR10_labeled):
              self.outpath = []
         else:
             self.outpath = np.load(out_path+'.npy')
-            self.outpath = transpose(normalise(pad(self.outpath)))
+            self.outpath = transpose(normalize(pad(self.outpath)))
         self.targets = np.array(self.targets.tolist() + [-1]*len(self.outpath))
 
     def __len__(self):
@@ -132,18 +132,18 @@ class CIFAR10_cocnat(torchvision.datasets.CIFAR10):
                  download=download)
 
         self.data_x = self.data[labeled_indexs]
-        self.data_x = transpose(normalise(pad(self.data_x)))
+        self.data_x = transpose(normalize(pad(self.data_x)))
         self.targets_x = np.array(self.targets)[labeled_indexs]
 
         self.data_u = self.data[unlabeled_indexs]
-        self.data_u = transpose(normalise(pad(self.data_u)))
+        self.data_u = transpose(normalize(pad(self.data_u)))
         self.targets_u = np.array(self.targets)[unlabeled_indexs]
         
         if out_path == './data/none':
              self.outpath = []
         else:
             self.outpath = np.load(out_path+'.npy')
-            self.outpath = transpose(normalise(pad(self.outpath)))
+            self.outpath = transpose(normalize(pad(self.outpath)))
 
         self.soft_labels = np.zeros((len(self.data_x)+len(self.data_u)+len(self.outpath)), dtype=np.float32)
         for idx in range(len(self.data_x)+len(self.data_u)+len(self.outpath)):
