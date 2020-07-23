@@ -1,5 +1,5 @@
 # Multi-Task Curriculum Framework for Open-Set SSL
-This is the official PyTorch implementation of [Multi-Task Curriculum Framework for Open-Set Semi-Supervised Learning](https://arxiv.org/abs/1905.02249). 
+This is the official PyTorch implementation of [Multi-Task Curriculum Framework for Open-Set Semi-Supervised Learning](https://arxiv.org/abs/2007.11330). 
 
 ## Requirements
 - Python 3.7
